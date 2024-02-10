@@ -10,6 +10,10 @@
 		$rootScope.noteID = id;
 		$rootScope.$emit('selectNote', id);
 	}
+	
+	$rootScope.$on('updatedNote', function(event, data) {
+		c.server.update();
+	})
 }]]></client_script>
         <controller_as>c</controller_as>
         <css/>
@@ -42,20 +46,30 @@
 		//push the populated obj into the array
 		data.notes.push(noteObj);
 	}
+	
+	if (input && input.noteID) {
+		var note = new GlideRecord('x_snc_createnotes_note');
+		if (note.get(input.noteID)) {
+			if (input.action=='getNewNote') {
+				data.note = {};
+				$sp.getRecordValues(data.note, note, "title, note, sys_id");
+			}
+		}
+	}
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-02-10 09:34:50</sys_created_on>
         <sys_id>9bbfd749475002108dad50fe316d43ab</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>Notes List dev</sys_name>
         <sys_package display_value="CreateNotes" source="x_snc_createnotes">df5fd9a5090232007f44e1046c8ff69f</sys_package>
         <sys_policy/>
         <sys_scope display_value="CreateNotes">df5fd9a5090232007f44e1046c8ff69f</sys_scope>
         <sys_update_name>sp_widget_9bbfd749475002108dad50fe316d43ab</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-02-10 12:33:21</sys_updated_on>
+        <sys_updated_on>2024-02-10 16:18:39</sys_updated_on>
         <template><![CDATA[<div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h3 class="panel-title pull-left">
